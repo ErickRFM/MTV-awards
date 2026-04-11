@@ -92,12 +92,12 @@ $heroLeadAlbums = array_slice($heroAlbums ?? [], 0, 4);
         <span class="section-heading__kicker">Capas imaginarias</span>
         <h2>Mini universos para darle personalidad al portal</h2>
       </div>
-      <div class="section-heading__actions">
+      <!-- <div class="section-heading__actions">
         <p class="mb-0">Son bloques narrativos y visuales que aprovechan tus assets existentes sin tocar la logica del sistema.</p>
         <button type="button" class="btn btn-outline-primary btn-sm fanverse-modal__button" data-toggle="modal" data-target="#fanverseModal">
           Abrir modal demo
         </button>
-      </div>
+      </div> -->
     </div>
     <div class="row mt-4">
       <?php foreach ($fantasyMoments as $moment): ?>
