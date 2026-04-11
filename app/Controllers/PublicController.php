@@ -11,9 +11,19 @@ class PublicController
     public function home(): void
     {
         $activeNominations = Nomination::allActive();
+
         $featuredArtists = Artist::top(6);
+         // ORDENAMOS POR QUE VIENEN DESORDENADOS EN TU MODELO
+        $heroOrder = [1, 2, 4, 3];
+        usort($featuredArtists, function ($a, $b) use ($heroOrder) {
+            $posA = array_search($a['id'], $heroOrder);
+            $posB = array_search($b['id'], $heroOrder);
+            $posA = $posA === false ? 99 : $posA;
+            $posB = $posB === false ? 99 : $posB;
+            return $posA - $posB;
+        });
+        $heroArtists = array_slice($featuredArtists, 0, 3);
         $featuredAlbums = Album::top(6);
-        $heroArtists = array_slice($featuredArtists !== [] ? $featuredArtists : Artist::all(), 0, 4);
         $heroAlbums = array_slice($featuredAlbums !== [] ? $featuredAlbums : Album::all(), 0, 4);
         $siteStats = [
             [
