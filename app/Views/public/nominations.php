@@ -35,7 +35,6 @@ require __DIR__ . '/../partials/header_public.php';
   <div class="card-header nominations-view__header">
     <div class="nominations-view__copy">
       <span class="nominations-view__eyebrow">Filtro de vigencia</span>
-      <h3 class="card-title mb-2"><?= htmlspecialchars($statusHeadings[$selectedStatus] ?? $statusHeadings['all']) ?></h3>
       <p class="nominations-view__summary mb-0">
         <?= htmlspecialchars($statusDescriptions[$selectedStatus] ?? $statusDescriptions['all']) ?>
         En proceso: <?= (int) ($inProgressCount ?? 0) ?> | Finalizadas: <?= (int) ($finishedCount ?? 0) ?>.
