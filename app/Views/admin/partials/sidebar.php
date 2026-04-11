@@ -60,7 +60,7 @@ $roleId = (int) ($user['role_id'] ?? 0);
         <?php endif; ?>
         <li class="nav-item">
           <a href="/admin/artists" class="nav-link <?= $activeMenu === 'artists' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-user-music"></i>
+            <i class="nav-icon fas fa-users"></i>
             <p>Artistas</p>
           </a>
         </li>
