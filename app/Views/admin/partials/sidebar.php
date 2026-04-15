@@ -11,6 +11,12 @@ $roleId = (int) ($user['role_id'] ?? 0);
   </ul>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item">
+      <button type="button" class="nav-link theme-toggle theme-toggle--admin" data-theme-toggle aria-label="Activar modo oscuro" title="Cambiar tema">
+        <i class="fas fa-moon" aria-hidden="true"></i>
+        <span class="sr-only theme-toggle__label">Modo oscuro</span>
+      </button>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" href="/" target="_blank">Ver portal</a>
     </li>
     <li class="nav-item">
@@ -68,6 +74,12 @@ $roleId = (int) ($user['role_id'] ?? 0);
           <a href="/admin/albums" class="nav-link <?= $activeMenu === 'albums' ? 'active' : '' ?>">
             <i class="nav-icon fas fa-compact-disc"></i>
             <p>Albumes</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/genres" class="nav-link <?= $activeMenu === 'genres' ? 'active' : '' ?>">
+            <i class="nav-icon fas fa-tags"></i>
+            <p>Generos</p>
           </a>
         </li>
         <li class="nav-item">

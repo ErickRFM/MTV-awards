@@ -8,12 +8,33 @@ $loginJsVersion = @filemtime(__DIR__ . '/../../../public/js/app.js') ?: time();
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ingreso | MTV Awards</title>
+  <script>
+    (function () {
+      try {
+        var storedTheme = localStorage.getItem('mtv-theme');
+        var theme = storedTheme;
+
+        if (theme !== 'dark' && theme !== 'light') {
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          theme = prefersDark ? 'dark' : 'light';
+        }
+
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (error) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="<?= htmlspecialchars(app_url('/vendor/adminlte/plugins/fontawesome-free/css/all.min.css')) ?>">
   <link rel="stylesheet" href="<?= htmlspecialchars(app_url('/vendor/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css')) ?>">
   <link rel="stylesheet" href="<?= htmlspecialchars(app_url('/vendor/adminlte/dist/css/adminlte.min.css')) ?>">
   <link rel="stylesheet" href="<?= htmlspecialchars(app_url('/css/app.css?v=' . $loginCssVersion)) ?>">
 </head>
 <body class="hold-transition login-page">
+<button type="button" class="theme-toggle theme-toggle--auth" data-theme-toggle aria-label="Activar modo oscuro" title="Cambiar tema">
+  <i class="fas fa-moon" aria-hidden="true"></i>
+  <span class="sr-only theme-toggle__label">Modo oscuro</span>
+</button>
 <div class="login-box">
   <div class="card card-outline card-primary">
     <div class="card-header text-center">

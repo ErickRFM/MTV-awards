@@ -92,12 +92,6 @@ $heroLeadAlbums = array_slice($heroAlbums ?? [], 0, 4);
         <span class="section-heading__kicker">Capas imaginarias</span>
         <h2>Mini universos para darle personalidad al portal</h2>
       </div>
-      <div class="section-heading__actions">
-        <p class="mb-0">Son bloques narrativos y visuales que aprovechan tus assets existentes sin tocar la logica del sistema.</p>
-        <button type="button" class="btn btn-outline-primary btn-sm fanverse-modal__button" data-toggle="modal" data-target="#fanverseModal">
-          Abrir modal demo
-        </button>
-      </div>
     </div>
     <div class="row mt-4">
       <?php foreach ($fantasyMoments as $moment): ?>
@@ -113,9 +107,9 @@ $heroLeadAlbums = array_slice($heroAlbums ?? [], 0, 4);
   </div>
 </section>
 
-<section class="row">
+<section class="row home-showcase-row mb-4">
   <div class="col-xl-7">
-    <div class="card public-card mb-4">
+    <div class="card public-card home-showcase-card home-showcase-card--artists mb-4">
       <div class="card-body">
         <div class="section-heading section-heading--tight">
           <div>
@@ -148,7 +142,7 @@ $heroLeadAlbums = array_slice($heroAlbums ?? [], 0, 4);
     </div>
   </div>
   <div class="col-xl-5">
-    <div class="card public-card mb-4">
+    <div class="card public-card home-showcase-card home-showcase-card--albums mb-4">
       <div class="card-body">
         <div class="section-heading section-heading--tight">
           <div>
@@ -181,6 +175,65 @@ $heroLeadAlbums = array_slice($heroAlbums ?? [], 0, 4);
   </div>
 </section>
 
+<section class="card public-card public-card--compact mb-4">
+  <div class="card-body">
+    <div class="section-heading section-heading--tight">
+      <div>
+        <span class="section-heading__kicker">Tracklist live</span>
+        <h2>Canciones disponibles</h2>
+      </div>
+    </div>
+    <div class="table-responsive mt-3">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+        <tr>
+          <th>Portada</th>
+          <th>Cancion</th>
+          <th>Artista</th>
+          <th>Album</th>
+          <th>Genero</th>
+          <th>Recursos</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (empty($featuredSongs)): ?>
+          <tr><td colspan="6" class="text-center text-muted">Aun no hay canciones publicadas.</td></tr>
+        <?php endif; ?>
+        <?php foreach ($featuredSongs as $song): ?>
+          <tr>
+            <td>
+              <img
+                src="<?= htmlspecialchars(record_image_url($song, 'cover', 'songs', record_image_url($song, 'album_cover', 'albums', '/vendor/adminlte/dist/img/photo1.png', 'album_title'), 'title')) ?>"
+                class="table-thumb rounded"
+                alt="<?= htmlspecialchars($song['title']) ?>"
+              >
+            </td>
+            <td><?= htmlspecialchars($song['title']) ?></td>
+            <td><?= htmlspecialchars($song['artist_name'] ?? 'Sin artista') ?></td>
+            <td><?= htmlspecialchars($song['album_title'] ?? 'Sin album') ?></td>
+            <td><?= htmlspecialchars($song['genre_name'] ?? 'Sin genero') ?></td>
+            <td class="text-nowrap">
+              <?php if (!empty($song['album_id'])): ?>
+                <a href="/album?id=<?= (int) $song['album_id'] ?>" class="btn btn-sm btn-outline-primary">Ver album</a>
+              <?php endif; ?>
+              <?php if (!empty($song['mp3_url'])): ?>
+                <a href="<?= htmlspecialchars($song['mp3_url']) ?>" target="_blank" rel="noreferrer" class="btn btn-sm btn-success">MP3</a>
+              <?php endif; ?>
+              <?php if (!empty($song['video_url'])): ?>
+                <a href="<?= htmlspecialchars($song['video_url']) ?>" target="_blank" rel="noreferrer" class="btn btn-sm btn-danger">Video</a>
+              <?php endif; ?>
+              <?php if (empty($song['album_id']) && empty($song['mp3_url']) && empty($song['video_url'])): ?>
+                <span class="text-muted">Sin enlaces</span>
+              <?php endif; ?>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <?php if (!empty($heroLeadAlbums)): ?>
   <section class="card public-card public-card--compact mb-4">
     <div class="card-body">
@@ -207,36 +260,5 @@ $heroLeadAlbums = array_slice($heroAlbums ?? [], 0, 4);
     </div>
   </section>
 <?php endif; ?>
-
-<div class="modal fade fanverse-modal" id="fanverseModal" tabindex="-1" role="dialog" aria-labelledby="fanverseModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <button type="button" class="fanverse-modal__close" data-dismiss="modal" aria-label="Cerrar">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <div class="modal-body">
-        <span class="fanverse-modal__eyebrow">Modal showcase</span>
-        <h2 id="fanverseModalLabel">Atlas Fanverse</h2>
-        <p class="fanverse-modal__lead">
-          Un ejemplo de modal visual que conserva la atmosfera neon del portal sin tocar la logica principal ni romper la navegacion.
-        </p>
-        <div class="fanverse-modal__grid">
-          <article class="fanverse-modal__card">
-            <strong>Escenario</strong>
-            <p>Capas de color, brillo suave y texto corto para presentar contenido destacado sin saturar la pantalla.</p>
-          </article>
-          <article class="fanverse-modal__card">
-            <strong>Lectura movil</strong>
-            <p>Espacios mas compactos, radios generosos y botones que respiran mejor en anchos pequenos.</p>
-          </article>
-          <article class="fanverse-modal__card">
-            <strong>Coherencia</strong>
-            <p>El modal toma los degradados, bordes y contrastes del sistema para verse nativo dentro del fanverse.</p>
-          </article>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <?php require __DIR__ . '/../partials/footer_public.php'; ?>

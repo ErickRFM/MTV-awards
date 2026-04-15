@@ -4,6 +4,23 @@ require_once __DIR__ . '/Model.php';
 
 class Song extends Model
 {
+    public static function latest(int $limit = 6): array
+    {
+        $statement = self::db()->prepare("
+            SELECT s.*, al.id AS album_id, al.title AS album_title, al.cover AS album_cover, ar.name AS artist_name, g.name AS genre_name
+            FROM songs s
+            LEFT JOIN albums al ON al.id = s.album_id
+            LEFT JOIN artists ar ON ar.id = al.artist_id
+            LEFT JOIN genres g ON g.id = s.genre_id
+            ORDER BY s.release_date IS NULL, s.release_date DESC, s.id DESC
+            LIMIT :limit
+        ");
+        $statement->bindValue('limit', $limit, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
     public function all(): array
     {
         $sql = "

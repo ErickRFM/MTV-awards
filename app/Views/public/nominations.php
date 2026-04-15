@@ -5,16 +5,6 @@ $statusLabels = [
     'in_progress' => 'En proceso',
     'finished' => 'Finalizadas',
 ];
-$statusHeadings = [
-    'all' => 'Todas las nominaciones',
-    'in_progress' => 'Nominaciones en proceso',
-    'finished' => 'Nominaciones finalizadas',
-];
-$statusDescriptions = [
-    'all' => 'Explora todas las nominaciones y revisa cuantas siguen abiertas o ya cerraron su vigencia.',
-    'in_progress' => 'Estas nominaciones siguen dentro de la ventana de vigencia disponible en esta vista.',
-    'finished' => 'Estas nominaciones ya cerraron su vigencia y quedan separadas del listado activo.',
-];
 $emptyMessages = [
     'all' => 'No hay nominaciones disponibles.',
     'in_progress' => 'No hay nominaciones en proceso por el momento.',
@@ -33,14 +23,6 @@ require __DIR__ . '/../partials/header_public.php';
 ?>
 <div class="card nominations-view">
   <div class="card-header nominations-view__header">
-    <div class="nominations-view__copy">
-      <span class="nominations-view__eyebrow">Filtro de vigencia</span>
-      <h3 class="card-title mb-2"><?= htmlspecialchars($statusHeadings[$selectedStatus] ?? $statusHeadings['all']) ?></h3>
-      <p class="nominations-view__summary mb-0">
-        <?= htmlspecialchars($statusDescriptions[$selectedStatus] ?? $statusDescriptions['all']) ?>
-        En proceso: <?= (int) ($inProgressCount ?? 0) ?> | Finalizadas: <?= (int) ($finishedCount ?? 0) ?>.
-      </p>
-    </div>
     <div class="nominations-tabs" role="tablist" aria-label="Filtrar nominaciones por vigencia">
       <?php foreach ($tabs as $tab): ?>
         <?php $isActive = $selectedStatus === $tab['key']; ?>

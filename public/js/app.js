@@ -3,6 +3,99 @@ const FANVERSE_MODAL_TRANSITION_MS = 180;
 const fanverseModalQueue = [];
 let fanverseModalActive = false;
 let fanverseKeyHandlerRegistered = false;
+const MTV_THEME_STORAGE_KEY = 'mtv-theme';
+const MTV_THEME_DARK = 'dark';
+const MTV_THEME_LIGHT = 'light';
+
+function getActiveTheme() {
+  return document.documentElement.getAttribute('data-theme') === MTV_THEME_DARK
+    ? MTV_THEME_DARK
+    : MTV_THEME_LIGHT;
+}
+
+function persistTheme(theme) {
+  try {
+    localStorage.setItem(MTV_THEME_STORAGE_KEY, theme);
+  } catch (error) {
+    // Ignore storage issues and keep the theme in memory only.
+  }
+}
+
+function updateThemeToggleButtons(theme) {
+  const isDark = theme === MTV_THEME_DARK;
+
+  document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+    if (!(button instanceof HTMLElement)) {
+      return;
+    }
+
+    const icon = button.querySelector('i');
+    const label = button.querySelector('.theme-toggle__label');
+    const nextLabel = isDark ? 'Modo claro' : 'Modo oscuro';
+
+    button.setAttribute('aria-label', `Activar ${nextLabel.toLowerCase()}`);
+    button.setAttribute('title', nextLabel);
+    button.setAttribute('data-theme-state', theme);
+
+    if (icon instanceof HTMLElement) {
+      icon.classList.remove('fa-moon', 'fa-sun');
+      icon.classList.add(isDark ? 'fa-sun' : 'fa-moon');
+    }
+
+    if (label instanceof HTMLElement) {
+      label.textContent = nextLabel;
+    }
+  });
+}
+
+function applyTheme(theme) {
+  const normalizedTheme = theme === MTV_THEME_DARK ? MTV_THEME_DARK : MTV_THEME_LIGHT;
+
+  document.documentElement.setAttribute('data-theme', normalizedTheme);
+
+  if (document.body instanceof HTMLElement) {
+    document.body.setAttribute('data-theme', normalizedTheme);
+  }
+
+  updateThemeToggleButtons(normalizedTheme);
+
+  return normalizedTheme;
+}
+
+function initializeThemeToggle() {
+  const mediaQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  const storedTheme = (() => {
+    try {
+      return localStorage.getItem(MTV_THEME_STORAGE_KEY);
+    } catch (error) {
+      return null;
+    }
+  })();
+
+  applyTheme(getActiveTheme());
+
+  document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const nextTheme = getActiveTheme() === MTV_THEME_DARK ? MTV_THEME_LIGHT : MTV_THEME_DARK;
+      persistTheme(nextTheme);
+      applyTheme(nextTheme);
+    });
+  });
+
+  if (storedTheme === null && mediaQuery) {
+    const syncTheme = (event) => {
+      applyTheme(event.matches ? MTV_THEME_DARK : MTV_THEME_LIGHT);
+    };
+
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', syncTheme);
+    } else if (typeof mediaQuery.addListener === 'function') {
+      mediaQuery.addListener(syncTheme);
+    }
+  }
+}
+
+initializeThemeToggle();
 
 function escapeFanverseHtml(value) {
   return String(value ?? '')

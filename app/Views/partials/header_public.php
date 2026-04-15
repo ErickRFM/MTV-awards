@@ -8,6 +8,23 @@ $publicCssVersion = @filemtime(__DIR__ . '/../../../public/css/app.css') ?: time
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= htmlspecialchars($pageTitle ?? 'MTV Awards') ?></title>
+  <script>
+    (function () {
+      try {
+        var storedTheme = localStorage.getItem('mtv-theme');
+        var theme = storedTheme;
+
+        if (theme !== 'dark' && theme !== 'light') {
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          theme = prefersDark ? 'dark' : 'light';
+        }
+
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (error) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="<?= htmlspecialchars(app_url('/vendor/adminlte/plugins/fontawesome-free/css/all.min.css')) ?>">
   <link rel="stylesheet" href="<?= htmlspecialchars(app_url('/vendor/adminlte/dist/css/adminlte.min.css')) ?>">
   <link rel="stylesheet" href="<?= htmlspecialchars(app_url('/css/app.css?v=' . $publicCssVersion)) ?>">
@@ -34,6 +51,12 @@ $publicCssVersion = @filemtime(__DIR__ . '/../../../public/css/app.css') ?: time
           <li class="nav-item"><a href="/albums" class="nav-link">Albumes</a></li>
         </ul>
         <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+          <li class="nav-item">
+            <button type="button" class="nav-link theme-toggle theme-toggle--public" data-theme-toggle aria-label="Activar modo oscuro" title="Cambiar tema">
+              <i class="fas fa-moon" aria-hidden="true"></i>
+              <span class="sr-only theme-toggle__label">Modo oscuro</span>
+            </button>
+          </li>
           <?php if ($sessionUser): ?>
             <?php if ((int) ($sessionUser['role_id'] ?? 0) === 1 || (int) ($sessionUser['role_id'] ?? 0) === 2): ?>
               <li class="nav-item"><a href="/admin/dashboard" class="nav-link">Panel</a></li>

@@ -13,6 +13,7 @@ class PublicController
         $activeNominations = Nomination::allActive();
         $featuredArtists = Artist::top(6);
         $featuredAlbums = Album::top(6);
+        $featuredSongs = Song::latest(6);
         $heroArtists = array_slice($featuredArtists !== [] ? $featuredArtists : Artist::all(), 0, 4);
         $heroAlbums = array_slice($featuredAlbums !== [] ? $featuredAlbums : Album::all(), 0, 4);
         $siteStats = [

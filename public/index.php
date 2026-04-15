@@ -9,6 +9,7 @@ require_once __DIR__ . '/../app/Controllers/AdminController.php';
 require_once __DIR__ . '/../app/Controllers/UserController.php';
 require_once __DIR__ . '/../app/Controllers/ArtistController.php';
 require_once __DIR__ . '/../app/Controllers/AlbumController.php';
+require_once __DIR__ . '/../app/Controllers/GenreController.php';
 require_once __DIR__ . '/../app/Controllers/SongController.php';
 require_once __DIR__ . '/../app/Controllers/NominationController.php';
 require_once __DIR__ . '/../app/Controllers/VoteController.php';
@@ -189,8 +190,18 @@ if ($uri === '/admin/albums') {
     exit;
 }
 
+if ($uri === '/admin/genres') {
+    (new GenreController())->list();
+    exit;
+}
+
 if ($uri === '/admin/album/create') {
     (new AlbumController())->createForm();
+    exit;
+}
+
+if ($uri === '/admin/genre/create') {
+    (new GenreController())->createForm();
     exit;
 }
 
@@ -199,8 +210,18 @@ if ($uri === '/admin/album/store' && $method === 'POST') {
     exit;
 }
 
+if ($uri === '/admin/genre/store' && $method === 'POST') {
+    (new GenreController())->store();
+    exit;
+}
+
 if ($uri === '/admin/album/edit' && isset($_GET['id'])) {
     (new AlbumController())->editForm((int) $_GET['id']);
+    exit;
+}
+
+if ($uri === '/admin/genre/edit' && isset($_GET['id'])) {
+    (new GenreController())->editForm((int) $_GET['id']);
     exit;
 }
 
@@ -209,8 +230,18 @@ if ($uri === '/admin/album/update' && $method === 'POST') {
     exit;
 }
 
+if ($uri === '/admin/genre/update' && $method === 'POST') {
+    (new GenreController())->update((int) ($_POST['id'] ?? 0));
+    exit;
+}
+
 if ($uri === '/admin/album/delete' && $method === 'POST') {
     (new AlbumController())->delete((int) ($_POST['id'] ?? 0));
+    exit;
+}
+
+if ($uri === '/admin/genre/delete' && $method === 'POST') {
+    (new GenreController())->delete((int) ($_POST['id'] ?? 0));
     exit;
 }
 

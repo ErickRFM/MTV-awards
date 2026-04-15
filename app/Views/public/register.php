@@ -8,11 +8,32 @@ $registerJsVersion = @filemtime(__DIR__ . '/../../../public/js/app.js') ?: time(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Registro | MTV Awards</title>
+  <script>
+    (function () {
+      try {
+        var storedTheme = localStorage.getItem('mtv-theme');
+        var theme = storedTheme;
+
+        if (theme !== 'dark' && theme !== 'light') {
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          theme = prefersDark ? 'dark' : 'light';
+        }
+
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (error) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="<?= htmlspecialchars(app_url('/vendor/adminlte/plugins/fontawesome-free/css/all.min.css')) ?>">
   <link rel="stylesheet" href="<?= htmlspecialchars(app_url('/vendor/adminlte/dist/css/adminlte.min.css')) ?>">
   <link rel="stylesheet" href="<?= htmlspecialchars(app_url('/css/app.css?v=' . $registerCssVersion)) ?>">
 </head>
 <body class="hold-transition register-page">
+<button type="button" class="theme-toggle theme-toggle--auth" data-theme-toggle aria-label="Activar modo oscuro" title="Cambiar tema">
+  <i class="fas fa-moon" aria-hidden="true"></i>
+  <span class="sr-only theme-toggle__label">Modo oscuro</span>
+</button>
 <div class="register-box">
   <div class="register-logo">
     <a href="/"><b>MTV</b> Awards</a>
